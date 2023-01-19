@@ -129,3 +129,38 @@ SET
     price = 30,
     category = "acessórios"
 WHERE id = 2;
+
+CREATE TABLE
+    purchases(
+        id TEXT PRIMARY KEY UNIQUE NOT NULL,
+        total_price REAL UNIQUE NOT NULL,
+        paid INTEGER NOT NULL,
+        delivered_at TEXT,
+        buyer_id TEXT NOT NULL,
+        FOREIGN KEY (buyer_id) REFERENCES users (id)
+    );
+
+INSERT INTO
+    purchases (
+        id,
+        total_price,
+        paid,
+        delivered_at,
+        buyer_id
+    )
+VALUES ("2", 150, 0, null, 2), ("3", 200, 0, null, 2), ("4", 250, 1, null, 3), ("1", 50, 1, null, 1);
+
+--Edit delivered_at FROM purchases para data e hora atual
+
+UPDATE purchases SET delivered_at=DATETIME() WHERE id=4;
+
+SELECT * FROM purchases;
+
+--SELECT purchases de um usuário específico juntando a tabela users e purchases
+
+SELECT *
+FROM purchases
+    INNER JOIN users ON purchases.buyer_id = users.id
+WHERE users.id = 1;
+
+DROP TABLE purchases;
