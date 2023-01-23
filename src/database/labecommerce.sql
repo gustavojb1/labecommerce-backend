@@ -133,12 +133,16 @@ WHERE id = 2;
 CREATE TABLE
     purchases(
         id TEXT PRIMARY KEY UNIQUE NOT NULL,
-        total_price REAL UNIQUE NOT NULL,
-        paid INTEGER NOT NULL,
-        delivered_at TEXT,
-        buyer_id TEXT NOT NULL,
-        FOREIGN KEY (buyer_id) REFERENCES users (id)
+        buyer TEXT NOT NULL,
+        total_price REAL NOT NULL,
+        create_at TEXT DEFAULT (DATETIME()) NOT NULL,
+        paid INTEGER,
+        FOREIGN KEY (buyer) REFERENCES users (id)
     );
+
+SELECT * FROM purchases;
+
+DROP TABLE purchases;
 
 INSERT INTO
     purchases (
