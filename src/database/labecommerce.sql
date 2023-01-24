@@ -147,16 +147,25 @@ DROP TABLE purchases;
 INSERT INTO
     purchases (
         id,
+        buyer,
         total_price,
-        paid,
-        delivered_at,
-        buyer_id
+        create_at,
+        paid
     )
-VALUES ("2", 150, 0, null, 2), ("3", 200, 0, null, 2), ("4", 250, 1, null, 3), ("1", 50, 1, null, 1);
+VALUES ("1", "1", 50, DATETIME('now'), 0), (
+        "2",
+        "2",
+        100,
+        DATETIME('now'),
+        0
+    );
 
 --Edit delivered_at FROM purchases para data e hora atual
 
-UPDATE purchases SET delivered_at=DATETIME() WHERE id=4;
+UPDATE purchases
+SET
+    delivered_at = DATETIME("now", "localtime")
+WHERE id = 4;
 
 SELECT * FROM purchases;
 
@@ -167,4 +176,24 @@ FROM purchases
     INNER JOIN users ON purchases.buyer_id = users.id
 WHERE users.id = 1;
 
-DROP TABLE purchases;
+CREATE TABLE
+    purchases_products(
+        purchase_id TEXT NOT NULL,
+        product_id TEXT NOT NULL,
+        quantity INTEGER NOT NULL
+    );
+
+SELECT * FROM purchases_products;
+
+INSERT INTO
+    purchases_products (
+        purchase_id,
+        product_id,
+        quantity
+    )
+VALUES ("1", "1", 2), ("2", "2", 5), ("3", "3", 10);
+
+SELECT *
+FROM purchases
+    LEFT JOIN purchases_products ON purchases.id = purchases_products.purchase_id
+    INNER JOIN products ON products.id = purchases_products.product_id;
