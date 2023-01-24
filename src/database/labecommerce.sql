@@ -133,22 +133,32 @@ WHERE id = 2;
 CREATE TABLE
     purchases(
         id TEXT PRIMARY KEY UNIQUE NOT NULL,
-        total_price REAL UNIQUE NOT NULL,
-        paid INTEGER NOT NULL,
-        delivered_at TEXT,
-        buyer_id TEXT NOT NULL,
-        FOREIGN KEY (buyer_id) REFERENCES users (id)
+        buyer TEXT NOT NULL,
+        total_price REAL NOT NULL,
+        create_at TEXT DEFAULT (DATETIME()) NOT NULL,
+        paid INTEGER,
+        FOREIGN KEY (buyer) REFERENCES users (id)
     );
+
+SELECT * FROM purchases;
+
+DROP TABLE purchases;
 
 INSERT INTO
     purchases (
         id,
+        buyer,
         total_price,
-        paid,
-        delivered_at,
-        buyer_id
+        create_at,
+        paid
     )
-VALUES ("2", 150, 0, null, 2), ("3", 200, 0, null, 2), ("4", 250, 1, null, 3), ("1", 50, 1, null, 1);
+VALUES ("1", "1", 50, DATETIME('now'), 0), (
+        "2",
+        "2",
+        100,
+        DATETIME('now'),
+        0
+    );
 
 --Edit delivered_at FROM purchases para data e hora atual
 
